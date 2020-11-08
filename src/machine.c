@@ -5,10 +5,23 @@
 #include "stack.h"
 #include "ops.h"
 
+machine* machine_new(uint8_t* program, const size_t data_size, const size_t return_size) {
+    machine* result = malloc(sizeof(machine));
+
+    result->program = program;
+    result->data = stack_new(data_size);
+    result->return_pointer = stack_new(return_size);
+    result->running = true;
+    result->pc = 0;
+
+    return result;
+}
+
 void machine_delete(machine* obj) {
     free(obj->program);
     stack_delete(&(obj->data));
     stack_delete(&(obj->return_pointer));
+    free(obj);
 }
 
 void machine_execute(machine* obj) {    

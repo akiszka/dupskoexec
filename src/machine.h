@@ -13,6 +13,7 @@ struct MACHINE_t {
 };
 typedef struct MACHINE_t machine;
 
+machine* machine_new(uint8_t* program, const size_t data_size, const size_t return_size);
 void machine_delete(machine* obj);
 void machine_execute(machine* obj);
 bool machine_execute_next(machine* obj);

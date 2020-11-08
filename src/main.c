@@ -52,15 +52,9 @@ int main(int argc, char** argv) {
     } else { // interpret a compiled file
 	if (input == NULL) input = "a.out";
 	
-	machine simple_machine = {
-	    .program = load_executable_file(input),
-	    .data = stack_new(128),
-	    .return_pointer = stack_new(128),
-	    .running = true,
-	    .pc = 0 };
-	
-	machine_execute(&simple_machine);
-	machine_delete(&simple_machine);
+	machine* machine = machine_new(load_executable_file(input), 128, 128);
+	machine_execute(machine);
+	machine_delete(machine);
     }
     
     return 0;
