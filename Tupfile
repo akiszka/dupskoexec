@@ -8,8 +8,8 @@ CFLAGS += -O2
 CFLAGS += -Wall
 CFLAGS += -Wextra
 
-!cc = |> $(CC) %f -o %o $(CFLAGS) $(CPPFLAGS) |>
+!cc = |> $(CC) %f -g -O0 -o %o $(CFLAGS) $(CPPFLAGS) |>
 !ar = |> $(AR) rcs %o %f |>
 !ld = |> $(LD) %f -o %o |>
 
-r: *.c |> !cc |> dupsko
+: *.c |> !cc |> dupsko
