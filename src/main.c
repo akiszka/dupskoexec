@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "ops.h"
 #include "stack.h"
 #include "machine.h"
 #include "compiler.h"
@@ -50,15 +47,18 @@ int main(int argc, char** argv) {
     if (do_compile) { // compile a file
 	if (input == NULL)  input = "a.in";
 	if (output == NULL) output = "a.out";
+	
 	compile(input, output);
     } else { // interpret a compiled file
 	if (input == NULL) input = "a.out";
+	
 	machine simple_machine = {
 	    .program = load_executable_file(input),
 	    .data = stack_new(128),
 	    .return_pointer = stack_new(128),
 	    .running = true,
 	    .pc = 0 };
+	
 	machine_execute(&simple_machine);
 	machine_delete(&simple_machine);
     }
