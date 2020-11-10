@@ -32,7 +32,7 @@ void machine_execute(machine* obj) {
 bool machine_load_data_next(machine* obj) { // returns true if we're to keep loading data
     uint8_t piece_of_data = obj->program[obj->pc/2];
     if (piece_of_data == 0) {
-	obj->pc+=2;
+	obj->pc += 2;
 	return false;
     }
     
@@ -48,9 +48,12 @@ bool machine_execute_next(machine* obj) { // returns 1 if running shoud be conti
     return obj->running;
 }
 
-uint8_t machine_get_opcode(machine* obj) {    
+uint8_t machine_get_opcode(machine* obj) {
+    uint8_t opcode;
     if(0 == obj->pc % 2)
-	return (obj->program[obj->pc/2] & 0xf0) >> 4;
+	opcode = (obj->program[obj->pc/2] & 0xf0) >> 4;
     else
-	return obj->program[(obj->pc-1)/2] & 0x0f;
+	opcode = obj->program[(obj->pc-1)/2] & 0x0f;
+    printf(" !got %x at %d\n", opcode, obj->pc);
+    return opcode;
 }

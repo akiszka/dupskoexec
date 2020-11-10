@@ -19,6 +19,7 @@ void op_not(machine* obj);
 void op_read(machine* obj);
 void op_write(machine* obj);
 void op_call(machine* obj);
+void op_ret(machine* obj);
 
 const static opcode_t opcodes[16] = {
     op_pop,
@@ -36,5 +37,5 @@ const static opcode_t opcodes[16] = {
     op_write,
     op_call,
     op_push,
-    op_nop // reserved for the future
+    op_ret
 };

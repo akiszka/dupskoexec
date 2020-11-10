@@ -25,10 +25,10 @@ void write_file(char* filename, uint8_t* buffer, size_t len) {
 }
 
 void append_opcode(uint8_t** buffer, size_t* buffer_size, uint64_t* counter, uint8_t opcode) {
-    opcode = opcode & 0x0f; // ensure that the opcode os only 1/2 byte
+    opcode &= 0x0f; // ensure that the opcode is only 4 bits
+    size_t index = (*counter - (*counter)%2)/2; // get the array index
     
-    int index = (*counter - (*counter)%2)/2; // get the index
-    if (*buffer_size <= index+5) { // if we have less than 5 spaces in the buffer left, allocate some more
+    if (*buffer_size <= index+5) { // if we have less than 5 spaces in the buffer left, allocate some more, TODO: adaptive resizing
 	uint8_t* buffer_tmp = realloc(*buffer, (*buffer_size)+10);
 
 	if (NULL != buffer_tmp) {
@@ -76,7 +76,7 @@ void compile(char* input_fname, char* output_fname) {
 	else if (CHECK_COMMAND("not\n"))   INSERT_OP(0xA);
 	else if (CHECK_COMMAND("read\n"))  INSERT_OP(0xB);
 	else if (CHECK_COMMAND("write\n")) INSERT_OP(0xC);
-	else if (CHECK_COMMAND("call\n"))  INSERT_OP(0xD);
+	else if (CHECK_COMMAND("return\n")) INSERT_OP(0xF);
 	else if (CHECK_COMMAND_ARG("push ", 5)) {
 	    char arg[10];
 	    strcpy(arg, command+4);
@@ -104,10 +104,24 @@ void compile(char* input_fname, char* output_fname) {
 		INSERT_OP((current_char & 0xf0) >> 4);
 		INSERT_OP(current_char & 0x0f);
 	    }
-	}
+	} else if (CHECK_COMMAND_ARG("call ", 5)) {
+	    char arg[10];
+	    strcpy(arg, command+5);
+	    for (uint8_t i = 0; i < 10; ++i)
+		if (arg[i] == '\n') {
+		    arg[i] = 0;
+		    break;
+		}
+	    uint8_t arg_int = atoi(arg);
+	    INSERT_OP(0xD);
+	    INSERT_OP((arg_int & 0xf0) >> 4);
+	    INSERT_OP(arg_int & 0x0f);
+	} 
     }
 
     write_file(output_fname, buffer, (pc+pc%2)/2);
+    
+    fclose(input);
     free(buffer);
     free(command);
 }

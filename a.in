@@ -1,16 +1,10 @@
-pushs hello world
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-push 10
+call 9
+pushc u
 write
 end
+pushc p
+pushc h
+write
+write
+return
 

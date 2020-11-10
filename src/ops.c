@@ -7,6 +7,7 @@
 
 #define PUSH_DATA(x)   stack_push(&(obj->data), (x))
 #define PUSH_RETURN(x) stack_push(&(obj->return_pointer), (x))
+#define POP_RETURN()   stack_pop(&(obj->return_pointer))
 
 void op_pop(machine* obj) {
     stack_pop(&(obj->data));
@@ -20,6 +21,7 @@ void op_push(machine* obj) {
 }
 
 void op_nop(machine* obj) {
+    (void)obj;
     return;
 }
 
@@ -68,6 +70,7 @@ void op_not(machine* obj) {
 }
 
 void op_read(machine* obj) {
+    (void)obj;
     return;
 }
 
@@ -77,5 +80,17 @@ void op_write(machine* obj) {
 }
 
 void op_call(machine* obj) {
-    return;
+    uint8_t new_pc = 0;
+    ++obj->pc; new_pc |= machine_get_opcode(obj) << 4;
+    ++obj->pc; new_pc |= machine_get_opcode(obj);
+
+    printf("CALL: old %d new %d\n", obj->pc, new_pc);
+    PUSH_RETURN(obj->pc);
+    obj->pc = new_pc;
+}
+
+void op_ret(machine* obj) {
+    printf("RET: old %d ", obj->pc);
+    obj->pc = POP_RETURN();
+    printf(" new %d\n", obj->pc);
 }
