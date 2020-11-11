@@ -17,8 +17,6 @@ void funlist_add(uint64_t pc, char* name) {
     if (NULL != current_function) current_function->next = new;
     else first_function = new;
     current_function = new;
-
-    printf("GOT FUN: %u %s\n", pc, name);
 }
 
 void calllist_add(uint64_t pc, char* name) {
@@ -29,20 +27,16 @@ void calllist_add(uint64_t pc, char* name) {
     if (NULL != current_call) current_call->next = new;
     else first_call = new;
     current_call = new;
-
-    printf("GOT CALL: %u %s\n", pc, name);
 }
 
 void calllist_fill_buffer(uint8_t* buffer) {
     for (calllist* i = first_call; i != NULL; i = i->next) {
-	printf("here1\n");
 	for (funlist* j = first_function; j != NULL; j = j->next) {
 	    if (0 == strcmp(i->name, j->name)) {
 		size_t index = (i->pc - i->pc%2)/2;
-		printf("match pc %u index %u\n", i->pc, index);
-		if (0 == (i->pc % 2)) {
-		    buffer[index] = j->pc;   
-		} else {
+		if (0 == (i->pc % 2)) { // two half-bytes were left for us
+		    buffer[index] = j->pc; // on even pc just fill the value
+		} else { // on odd pc fill the first part into one place, then the second part into the next array index
 		    buffer[index] &= 0xf0;
 		    buffer[index] |= (j->pc & 0xf0) >> 4;
 		    buffer[index+1] &= 0x0f;
@@ -58,6 +52,7 @@ void funlist_free() {
     while (NULL != i) {
 	funlist* tmp = i;
 	i = i->next;
+	free(tmp->name);
 	free(tmp);
     }
 }
@@ -67,6 +62,7 @@ void calllist_free() {
     while (NULL != i) {
 	funlist* tmp = i;
 	i = i->next;
+	free(tmp->name);
 	free(tmp);
     }
 }

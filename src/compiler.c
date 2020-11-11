@@ -80,7 +80,7 @@ void compile(char* input_fname, char* output_fname) {
 	else if (CHECK_COMMAND("return\n")) INSERT_OP(0xF);
 	else if (CHECK_COMMAND_ARG("push ", 5)) {
 	    char arg[10];
-	    strcpy(arg, command+4);
+	    strncpy(arg, command+5, 10);
 	    for (uint8_t i = 0; i < 10; ++i)
 		if (arg[i] == '\n') {
 		    arg[i] = 0;
@@ -106,23 +106,20 @@ void compile(char* input_fname, char* output_fname) {
 		INSERT_OP(current_char & 0x0f);
 	    }
 	} else if (CHECK_COMMAND_ARG("call ", 5)) {
-	    char arg[20];
-	    strcpy(arg, command+5);
+	    char* arg = malloc(20);
+	    strncpy(arg, command+5, 20);
 	    for (uint8_t i = 0; i < 20; ++i)
 		if (arg[i] == '\n') {
 		    arg[i] = 0;
 		    break;
 		}
-	    //uint8_t arg_int = atoi(arg);
 	    INSERT_OP(0xD);
-	    //INSERT_OP((arg_int & 0xf0) >> 4);
-	    //INSERT_OP(arg_int & 0x0f);
 	    calllist_add(pc, arg);
-	    INSERT_OP(0);
+	    INSERT_OP(0); // placeholder ops
 	    INSERT_OP(0);
 	} else if (CHECK_COMMAND_ARG("fun ", 4)) {
-	    char arg[20];
-	    strcpy(arg, command+4);
+	    char* arg = malloc(20);
+	    strncpy(arg, command+4, 20);
 	    for (uint8_t i = 0; i < 20; ++i)
 		if (arg[i] == '\n') {
 		    arg[i] = 0;
@@ -133,6 +130,8 @@ void compile(char* input_fname, char* output_fname) {
     }
 
     calllist_fill_buffer(buffer);
+    funlist_free();
+    calllist_free();
     
     write_file(output_fname, buffer, (pc+pc%2)/2);
     

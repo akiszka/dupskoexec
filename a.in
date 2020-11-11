@@ -1,11 +1,15 @@
-nop
+call main
+
+fun main
 call test
-pushc u
-write
 end
+return
+
 fun test
-pushc p
-pushc h
+pushs legia
+write
+write
+write
 write
 write
 return

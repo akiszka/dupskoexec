@@ -54,6 +54,5 @@ uint8_t machine_get_opcode(machine* obj) {
 	opcode = (obj->program[obj->pc/2] & 0xf0) >> 4;
     else
 	opcode = obj->program[(obj->pc-1)/2] & 0x0f;
-    printf(" !got %x at %d\n", opcode, obj->pc);
     return opcode;
 }

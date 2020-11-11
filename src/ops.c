@@ -84,13 +84,10 @@ void op_call(machine* obj) {
     ++obj->pc; new_pc |= machine_get_opcode(obj) << 4;
     ++obj->pc; new_pc |= machine_get_opcode(obj);
 
-    printf("CALL: old %d new %d\n", obj->pc, new_pc);
     PUSH_RETURN(obj->pc);
     obj->pc = new_pc;
 }
 
 void op_ret(machine* obj) {
-    printf("RET: old %d ", obj->pc);
     obj->pc = POP_RETURN();
-    printf(" new %d\n", obj->pc);
 }
