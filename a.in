@@ -1,7 +1,9 @@
-call 9
+nop
+call test
 pushc u
 write
 end
+fun test
 pushc p
 pushc h
 write
