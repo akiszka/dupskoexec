@@ -115,7 +115,7 @@ void compile(char* input_fname, char* output_fname) {
 		}
 	    INSERT_OP(0xD);
 	    calllist_add(pc, arg);
-	    INSERT_OP(0); // placeholder ops
+	    INSERT_OP(0); // placeholder ops, will be replaced later
 	    INSERT_OP(0);
 	} else if (CHECK_COMMAND_ARG("fun ", 4)) {
 	    char* arg = malloc(20);

@@ -29,6 +29,12 @@ void machine_execute(machine* obj) {
     while(machine_execute_next(obj));
 }
 
+void machine_run(uint8_t* program, size_t data_size, size_t return_pointer_size) {
+    machine* machine = machine_new(program, data_size, return_pointer_size);
+    machine_execute(machine);
+    machine_delete(machine);
+}
+
 bool machine_load_data_next(machine* obj) { // returns true if we're to keep loading data
     uint8_t piece_of_data = obj->program[obj->pc/2];
     if (piece_of_data == 0) {

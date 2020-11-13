@@ -9,8 +9,16 @@ CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -g
 
-!cc = |> $(CC) %f -o %o $(CFLAGS) $(CPPFLAGS) |>
+CPPFLAGS += -L.
+CPPFLAGS += -ldupsko
+CPPFLAGS += -Isrc/include
+
+!cc_lib = |> $(CC) %f -c -o %o $(CFLAGS) |>
+!cc_prog = |> $(CC) %f -o %o $(CFLAGS) $(CPPFLAGS) |>
 !ar = |> $(AR) rcs %o %f |>
 !ld = |> $(LD) %f -o %o |>
 
-: src/*.c |> !cc |> dupsko
+: foreach src/library/*.c |> !cc_lib |> src/library/%B.o
+: src/library/*.o |> !ar |> libdupsko.a
+
+: foreach src/*.c | libdupsko.a |> !cc_prog |> %B

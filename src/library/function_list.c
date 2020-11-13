@@ -58,9 +58,9 @@ void funlist_free() {
 }
 
 void calllist_free() {
-    funlist* i = first_call;
+    calllist* i = first_call;
     while (NULL != i) {
-	funlist* tmp = i;
+	calllist* tmp = i;
 	i = i->next;
 	free(tmp->name);
 	free(tmp);
