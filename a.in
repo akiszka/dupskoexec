@@ -2,15 +2,43 @@ call main
 
 fun main
 call test
+call newline
+call test2
+call newline
 end
-return
 
 fun test
-pushs legia
+pushs testuje
 write
 write
 write
 write
+write
+write
+write
+return
+
+fun test2
+pushs wszystko dziala
+write
+write
+write
+write
+write
+write
+write
+write
+write
+write
+write
+write
+write
+write
+write
+return
+
+fun newline
+push 10
 write
 return
 

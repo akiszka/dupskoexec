@@ -8,10 +8,7 @@
 #include "compiler.h"
 #include "function_list.h"
 
-void usage() {
-    printf("usage: dupsko -f <input> -o <output> -ic\n-i -> interpret\n-c -> compile\n");
-    exit(1);
-}
+void usage(); // defined in the main program
 
 void write_file(char* filename, uint8_t* buffer, size_t len) {
     FILE* f;

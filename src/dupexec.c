@@ -6,6 +6,11 @@
 #include <sys/stat.h>
 #include <dupsko.h>
 
+void usage() {
+    printf("Usage: dupexec -f <input>\n");
+    exit(1);
+}
+
 uint8_t* load_executable_file(char* filename) {
     FILE* f;
     uint8_t* code = NULL;
@@ -28,7 +33,7 @@ int main(int argc, char** argv) {
     char c;
     char* input = NULL;
  
-    while ((c = getopt(argc, argv, "cif:o:")) != -1) {
+    while ((c = getopt(argc, argv, "f:")) != -1) {
 	switch(c) {
 	case 'f': input = optarg; break;
 	default: usage(); break;

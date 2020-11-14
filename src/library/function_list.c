@@ -13,6 +13,7 @@ void funlist_add(uint64_t pc, char* name) {
     funlist* new = malloc(sizeof(funlist));
     new->pc = pc;
     new->name = name;
+    new->next = NULL;
     
     if (NULL != current_function) current_function->next = new;
     else first_function = new;
@@ -23,6 +24,7 @@ void calllist_add(uint64_t pc, char* name) {
     calllist* new = malloc(sizeof(calllist));
     new->pc = pc;
     new->name = name;
+    new->next = NULL;
     
     if (NULL != current_call) current_call->next = new;
     else first_call = new;
