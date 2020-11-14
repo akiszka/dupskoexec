@@ -1,40 +1,20 @@
 call main
 
 fun main
-call test
+call hello world
 call newline
 call test2
 call newline
 end
 
-fun test
-pushs testuje
-write
-write
-write
-write
-write
-write
-write
+fun hello world
+pushs hello world
+times 11 write
 return
 
 fun test2
-pushs wszystko dziala
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
-write
+pushs masno ni
+times 8 write
 return
 
 fun newline

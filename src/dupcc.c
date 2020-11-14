@@ -3,8 +3,10 @@
 #include <unistd.h>
 #include <dupsko.h>
 
+char* myname;
+
 void usage() {
-    printf("Usage: dupcc -f <input> -o <output>\n");
+    printf("Usage: %s -f <input> -o <output>\n", myname);
     exit(1);
 }
 
@@ -13,6 +15,8 @@ int main(int argc, char** argv) {
     char* input = NULL;
     char* output = NULL;
 
+    myname = argv[0];
+    
     while ((c = getopt(argc, argv, "f:o:")) != -1) {
 	switch(c) {
 	case 'f': input = optarg; break;
