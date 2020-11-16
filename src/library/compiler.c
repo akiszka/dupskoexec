@@ -28,9 +28,9 @@ void compile(char* input_fname, char* output_fname) {
 	compiler_generate_command(&buffer, &buffer_size, &pc, command);
     }
 
-    calllist_fill_buffer(buffer);
+    call_fill_buffer(&buffer);
     funlist_free();
-    calllist_free();
+    callstack_free();
     
     write_file(output_fname, buffer, (pc+pc%2)/2);
     
@@ -39,7 +39,9 @@ void compile(char* input_fname, char* output_fname) {
     free(command);
 }
 
-void compiler_generate_command(uint8_t** buffer, size_t* buffer_size, size_t* pc, char* command) {
+int compiler_generate_command(uint8_t** buffer, size_t* buffer_size, size_t* pc, char* command) {
+    int result = 0;
+    
     if (CHECK_COMMAND("pop\n"))         INSERT_OP(0);
     else if (CHECK_COMMAND("nop\n"))    INSERT_OP(1);
     else if (CHECK_COMMAND("end\n"))    INSERT_OP(2);
@@ -90,10 +92,11 @@ void compiler_generate_command(uint8_t** buffer, size_t* buffer_size, size_t* pc
 		break;
 	    }
 	INSERT_OP(0xD);
-	calllist_add(*pc, arg);
+	callstack_add(*pc, arg);
 	INSERT_OP(0); // placeholder ops, will be replaced later by calllist_fill_buffer()
 	INSERT_OP(0);
 	// there musn't be a free here
+	if (call_try_fill(buffer) == -2) result = -1; // there isn't a function defined yet... we return a special value in case this is a JIT compiler and a function won't be declared later
     } else if (CHECK_COMMAND_ARG("fun ", 4)) {
 	char* arg = malloc(20);
 	strncpy(arg, command+4, 20);
@@ -127,6 +130,8 @@ void compiler_generate_command(uint8_t** buffer, size_t* buffer_size, size_t* pc
 	free(arg1_amount);
 	free(arg2_command);
     }
+
+    return result;
 }
 
 void compiler_break_str_after(char** string, const char what_to_look_for, const uint8_t amount) {

@@ -1,0 +1,5 @@
+fun legia
+pushs hello world!
+times 12 write
+end
+

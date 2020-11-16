@@ -12,8 +12,8 @@ void usage() {
 
 int main(int argc, char** argv) {
     char c;
-    char* input = NULL;
-    char* output = NULL;
+    char* input = "a.in";
+    char* output = "a.out";
 
     myname = argv[0];
     
@@ -24,11 +24,7 @@ int main(int argc, char** argv) {
 	default: usage(); break;
 	}
     }
-
-    if (input == NULL)  input = "a.in";
-    if (output == NULL) output = "a.out";
     
     compile(input, output);
-    
     return 0;
 }

@@ -33,7 +33,7 @@ uint8_t* load_executable_file(char* filename) {
 
 int main(int argc, char** argv) {
     char c;
-    char* input = NULL;
+    char* input = "a.out";
 
     myname = argv[0];
     
@@ -44,8 +44,11 @@ int main(int argc, char** argv) {
 	}
     }
     
-    if (input == NULL) input = "a.out";
-    machine_run(load_executable_file(input), 128, 128);
-    
+    uint8_t** code =  malloc(sizeof(uint8_t*));
+    *code = load_executable_file(input);
+
+    machine_run(code, 128, 128);
+
+    free(code);
     return 0;
 }
