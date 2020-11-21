@@ -1,5 +1,5 @@
 # dupskoexec
-> This is a programming language similar to Assembler in syntax. It compiles to bytecode. Right now, there is a compiler, a bytecode interpreter and a JIT compiler.
+> This is a programming language similar to Assembler in syntax. It compiles to bytecode. Right now, there is a compiler and bytecode interpreter.
 ## Building
 ### Dependencies
 Building dupskoexec requires the following:
@@ -57,25 +57,10 @@ pushs \<string> |EXXEXXEXX...| pushes the string \<string> to the stack characte
 return | F| returns from the current function
 times \<number> \<instruction> | ? | has the same effect as typing \<instruction> exactly \<number> times
 
-### The bytecode interpreter
+### The bytecode interpreter (JIT compiler)
 If you want to execute any program compiled with dupcc, you have to use the bytecode interpreter, which understands the afore-mentioned opcodes. It's called dupexec and accepts only one command-line argument.
 
 argument | description
 :---: | :---
 -f | input file name
-
-### The JIT (Just-In-Time) compiler
-In case you don't want to compile your code and just execute the source file right away, there is always the JIT compiler. It's called dupjit and accepts only one command-line argument:
-
-argument | description
-:---: | :---
--f | input file name
-
-The JIT compiler works in a series of steps:
-1. Get a line from the input file
-2. Compile the single line
-3. Execute the single line
-4. Go to step 1 until the input file is finished
-
-This way, the JIT compiler can compile code while it's executed.
 
